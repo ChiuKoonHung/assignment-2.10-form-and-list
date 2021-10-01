@@ -1,15 +1,15 @@
 import React, {useState} from "react";
 
-
-function FormInput() {
-    const [state, setState] = useState({
-        product: null,
-        price:null,
-    });
-    const [formData, setFormData] = useState('');
+function ChildFormInput(props) {
+    const defaultState = {
+        id: 0,
+        product: '',
+        price: 0,
+    };
+    const [state, setState] = useState(defaultState);
+    const [formData, setFormData] = useState(1);
 
     const handleInput = (e) => {
-        e.preventDefault();
         const fieldInput = e.target.name;
         const data = {...state};
       
@@ -26,7 +26,10 @@ function FormInput() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setFormData(state.product, state.price);
+        props.add({ ...state });
+        setState(defaultState); 
+        setFormData(formData + 1); 
+        e.target.reset(); 
       }
 
     return (
@@ -36,17 +39,8 @@ function FormInput() {
           <input type="text" placeholder="Price" name="price" onChange={handleInput} />
           <button>Add</button>
         </form>
-        <div>
-          <ul>
-            {Object.entries(formData).map(([element, index]) => (
-                <li key={element}>
-                   {state.product}, {state.price}
-                </li>
-            ))}
-           </ul>
-       </div>
         </>
       );
 }
 
-export default FormInput;
+export default ChildFormInput;
